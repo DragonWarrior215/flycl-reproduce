@@ -1,0 +1,30 @@
+# Large model weights (download from torchvision)
+assets/
+*.pth
+*.ckpt
+
+# Datasets (download separately, e.g. CIFAR-100)
+data/
+
+# Extracted features (regenerate via extract_features_sharded.py)
+features/
+*.npz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# WSL / Windows artifacts
+*:Zone.Identifier
+
+# Editor / OS
+.DS_Store
+*.swp
+
+# Claude Code local settings
+.claude/settings.local.json

@@ -1,0 +1,25 @@
+{
+  "source": "Fly-CL ICLR 2026 arXiv:2510.16877 Table (main efficient regime)",
+  "backbone": "ViT-B/16 timm augreg B_16-i21k...imagenet2012 (IN-21k -> IN-1k)",
+  "metric": "\u0100 = overall accuracy = mean over stages of A_t (avg accuracy at stage t)",
+  "CIFAR-100": {
+    "FlyCL": {
+      "A_bar": 84.61,
+      "std": 0.16,
+      "tau_train_s": 14.28,
+      "tau_post_s": 5.25
+    },
+    "RanPAC": {
+      "A_bar": 82.72,
+      "std": 0.22,
+      "tau_train_s": 55.68,
+      "tau_post_s": 46.65
+    },
+    "F-OAL": {
+      "A_bar": 66.63,
+      "std": 0.71,
+      "tau_train_s": 80.74,
+      "tau_post_s": 71.78
+    }
+  }
+}
