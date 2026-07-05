@@ -1,12 +1,14 @@
-# Fly-CL (ICLR 2026) on CIFAR-100, B0 10x10 class-incremental protocol.
-# Re-implemented in LibContinual (NOT the authors' repo). See core/model/flycl.py.
-# Hyperparameters follow the official scripts/test_cifar.sh:
-#   M=10000, synaptic_degree=300, coding_level=0.3, seed=1993, ridge in [1e6,1e10].
+# Fly-CL (ICLR 2026) on VTAB, B0 5x10 class-incremental protocol.
+# Hyperparameters follow the official scripts/test_vtab.sh:
+#   M=10000, synaptic_degree=300, coding_level=0.3, seed=2023, ridge in [1e6,1e10].
+# Data: ADAM/PILOT ImageFolder subset (data/vtab/{train,test}, 1796/8619 images, 50 classes).
+# Primary results come from the cached-features driver (run_flycl_experiments.py --dataset vtab);
+# this config is provided for framework-side end-to-end runs.
 
 init_cls_num: &init_cls_num 10
 inc_cls_num: &inc_cls_num 10
-total_cls_num: &total_cls_num 100
-task_num: &task_num 10
+total_cls_num: &total_cls_num 50
+task_num: &task_num 5
 image_size: &image_size 224
 
 task_num: *task_num
@@ -14,26 +16,23 @@ init_cls_num: *init_cls_num
 inc_cls_num: *inc_cls_num
 total_cls_num: *total_cls_num
 
-# Fly-CL has no gradient training: 1 epoch just streams data through observe()
-# to accumulate G,Q; the closed-form solve happens in after_task().
 init_epoch: 1
 epoch: 1
 batch_size: 128
 val_per_epoch: 1
 
-seed: 1993
+seed: 2023
 
-# Dataset: our CIFAR-100 is in the standard cifar-100-python pickle format.
-dataset: binary_cifar100
-data_root: ./data          # contains data/cifar-100-python/{train,test}
-setting: task-agnostic     # class-incremental (no task id at inference)
+dataset: vtab
+data_root: ./data/vtab     # ImageFolder layout: train/<class>/*.jpg, test/<class>/*.jpg
+setting: task-agnostic
 testing_per_task: True
 num_workers: 8
 
-# Fly-CL CIFAR preprocessing: Resize(224, BICUBIC) + CenterCrop(224) + Normalize(0.5).
+# Official non-CIFAR preprocessing: Resize(256, BICUBIC) + CenterCrop(224) + Normalize(0.5).
 train_trfms:
   - Resize:
-      size: *image_size
+      size: 256
       interpolation: BICUBIC
   - CenterCrop:
       size: *image_size
@@ -44,7 +43,7 @@ train_trfms:
 
 test_trfms:
   - Resize:
-      size: *image_size
+      size: 256
       interpolation: BICUBIC
   - CenterCrop:
       size: *image_size
@@ -53,8 +52,6 @@ test_trfms:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
 
-# No real optimizer is used (frozen backbone + closed-form head). Kept minimal
-# so Trainer's loss.backward()/optimizer.step() are harmless no-ops.
 optimizer:
   name: SGD
   kwargs:
@@ -74,9 +71,7 @@ backbone:
   name: vit_flycl
   kwargs:
     pretrained: true
-    # Paper's IN21k augreg ViT-B/16. For the IN-1k backbone ablation use
-    # ./assets/vit_b_16_torchvision.pth instead (see README §5).
-    weights_path: ./assets/vit_b16_augreg_in21k_ft_in1k.npz
+    weights_path: ./assets/vit_b16_augreg_in21k_ft_in1k.npz   # paper's IN21k augreg ViT-B/16
     model_name: vit_base_patch16_224
 
 classifier:
@@ -88,7 +83,7 @@ classifier:
     coding_level: 0.3        # WTA keep ratio rho
     ridge_lower: 6           # log10
     ridge_upper: 10
-    seed: 1993
+    seed: 2023
     init_cls_num: *init_cls_num
     inc_cls_num: *inc_cls_num
     task_num: *task_num

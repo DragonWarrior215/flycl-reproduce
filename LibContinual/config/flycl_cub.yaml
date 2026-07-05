@@ -1,0 +1,90 @@
+# Fly-CL (ICLR 2026) on CUB-200-2011, B0 10x20 class-incremental protocol.
+# Hyperparameters follow the official scripts/test_cub.sh:
+#   M=10000, synaptic_degree=300, coding_level=0.3, seed=2023, ridge in [1e6,1e10].
+# Data: ADAM/PILOT ImageFolder subset (data/cub/{train,test}, 9430/2358 images, 200 classes).
+# Primary results come from the cached-features driver (run_flycl_experiments.py --dataset cub);
+# this config is provided for framework-side end-to-end runs.
+
+init_cls_num: &init_cls_num 20
+inc_cls_num: &inc_cls_num 20
+total_cls_num: &total_cls_num 200
+task_num: &task_num 10
+image_size: &image_size 224
+
+task_num: *task_num
+init_cls_num: *init_cls_num
+inc_cls_num: *inc_cls_num
+total_cls_num: *total_cls_num
+
+init_epoch: 1
+epoch: 1
+batch_size: 128
+val_per_epoch: 1
+
+seed: 2023
+
+dataset: cub
+data_root: ./data/cub      # ImageFolder layout: train/<class>/*.jpg, test/<class>/*.jpg
+setting: task-agnostic
+testing_per_task: True
+num_workers: 8
+
+# Official non-CIFAR preprocessing: Resize(256, BICUBIC) + CenterCrop(224) + Normalize(0.5).
+train_trfms:
+  - Resize:
+      size: 256
+      interpolation: BICUBIC
+  - CenterCrop:
+      size: *image_size
+  - ToTensor: {}
+  - Normalize:
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+
+test_trfms:
+  - Resize:
+      size: 256
+      interpolation: BICUBIC
+  - CenterCrop:
+      size: *image_size
+  - ToTensor: {}
+  - Normalize:
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]
+
+optimizer:
+  name: SGD
+  kwargs:
+    lr: 0.0
+
+lr_scheduler:
+  name: Constant
+
+buffer:
+  name: LinearBuffer
+  kwargs:
+    buffer_size: 0
+    batch_size: 128
+    strategy: random
+
+backbone:
+  name: vit_flycl
+  kwargs:
+    pretrained: true
+    weights_path: ./assets/vit_b16_augreg_in21k_ft_in1k.npz   # paper's IN21k augreg ViT-B/16
+    model_name: vit_base_patch16_224
+
+classifier:
+  name: FlyCL
+  kwargs:
+    embedding_dim: 768
+    expand_dim: 10000        # M
+    synaptic_degree: 300     # s non-zeros per KC row
+    coding_level: 0.3        # WTA keep ratio rho
+    ridge_lower: 6           # log10
+    ridge_upper: 10
+    seed: 2023
+    init_cls_num: *init_cls_num
+    inc_cls_num: *inc_cls_num
+    task_num: *task_num
+    total_cls_num: *total_cls_num

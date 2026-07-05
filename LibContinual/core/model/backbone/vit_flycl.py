@@ -3,11 +3,14 @@ Frozen ViT-B/16 backbone for Fly-CL integration in LibContinual.
 
 Fly-CL (ICLR 2026) uses a *nearly-frozen* pretrained backbone and reframes
 continual learning as a similarity-matching / closed-form readout problem.
-The paper uses timm ImageNet-21k augreg ViT-B/16. In this reproduction the
-21k weights host (HuggingFace) was unreachable, so we wrap torchvision's
-ViT-B/16 (ImageNet-1k supervised). See docs_deliverable/env_setup.md §3 for
-the fidelity note. The backbone is frozen (requires_grad=False) and returns
-the 768-d pre-logit CLS embedding.
+Two weight sources are supported (selected by the weights_path extension):
+  - .npz : the paper's timm ImageNet-21k augreg ViT-B/16 (JAX checkpoint,
+           assets/vit_b16_augreg_in21k_ft_in1k.npz), loaded via timm
+  - .pth : torchvision ViT-B/16 ImageNet-1k supervised (the fallback used
+           when the 21k weights host was unreachable; kept for the backbone
+           ablation, see README §5)
+The backbone is frozen (requires_grad=False) and returns the 768-d pre-logit
+CLS embedding.
 
 To keep experiments cheap on CPU, this backbone can also operate in a
 "precomputed features" mode: if a feature cache is provided, forward() simply
@@ -29,6 +32,14 @@ class ViT_FlyCL(nn.Module):
         self.eval()
 
     def _build(self, pretrained, weights_path):
+        if weights_path and weights_path.endswith(".npz"):
+            import timm
+            from timm.models.vision_transformer import _load_weights
+            m = timm.create_model("vit_base_patch16_224", pretrained=False, num_classes=0)
+            if pretrained:
+                _load_weights(m, weights_path)
+            self.backbone = m
+            return
         from torchvision.models import vit_b_16
         m = vit_b_16(weights=None)
         if pretrained:
