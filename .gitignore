@@ -1,10 +1,11 @@
-# Large model weights (download from torchvision)
-assets/
+# Large model weights (root assets/ only; keep small figures like official/Fly-CL/assets/Fig1.png)
+/assets/
 *.pth
 *.ckpt
+*.safetensors
 
 # Datasets (download separately, e.g. CIFAR-100)
-data/
+/data/
 
 # Extracted features (regenerate via extract_features_sharded.py)
 features/

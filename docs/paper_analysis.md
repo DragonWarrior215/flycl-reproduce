@@ -5,7 +5,7 @@
 > **会议**：ICLR 2026 (accepted)｜**arXiv**：2510.16877｜**官方代码**：github.com/gfyddha/Fly-CL
 > **作者**：Heming Zou, Yunliang Zang, Wutong Xu, Xiangyang Ji (Tsinghua)
 
-![Fly-CL 方法流水线](\\wsl.localhost\Ubuntu-26.04\home\bruce\flycl_full_reproducible\results\method_pipeline.png)
+![Fly-CL 方法流水线](../results/method_pipeline.png)
 
 ## 1. 动机
 
