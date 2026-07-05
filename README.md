@@ -28,6 +28,30 @@ arXiv:2510.16877）的算法**重构并迁移**到南京大学 MIND 实验室的
 ![精度与遗忘曲线](results/accuracy_curves.png)
 ![我方 vs 原论文](results/comparison_bars.png)
 
+### 1.1 官方框架复现（CIFAR-100 / CUB-200-2011 / VTAB，RTX 4090）
+
+在原作者官方框架（[`official/Fly-CL/`](official/Fly-CL/)，上游 commit `193b1b8`）上，用官方
+`scripts/test_{cifar,cub,vtab}.sh` 的原始超参（M=10000, s=300, ρ=0.3, ridge GCV 1e6–1e10，
+seed cifar=1993 / cub=vtab=2023）完整复现三个数据集：
+
+| 数据集 | 论文 Ā (%) | 复现 Ā (%)（IN21k augreg） | 差 | 复现 Ā (%)（timm 默认权重） |
+| --- | --- | --- | --- | --- |
+| CIFAR-100（10 任务） | 93.89 ± 0.12 | **93.88** | −0.01 | 93.20 |
+| CUB-200-2011（10 任务） | 93.84 ± 0.18 | **93.84** | ±0.00 | 91.92 |
+| VTAB（5 任务，50 类） | 96.54 ± 0.38 | **95.73** | −0.81（≈2σ） | 94.84 |
+
+- 论文数值为 arXiv:2510.16877 Table 1（ViT-B/16）；Ā 即官方 `main.py` 输出的 Accumulated Accuracy。
+- **权重歧义的澄清**：官方 `load_model.py` 的 `pretrained=True` 在 timm 0.9.16 下实际拉取
+  `augreg2_in21k_ft_in1k`（IN21k→IN1k 微调），而作者 `pretrained_model/download.sh` 指定的是
+  **纯 IN21k augreg** 权重。两者都跑了：IN21k-only 与论文逐数据集对齐（CUB 精确到小数点后两位），
+  timm 默认权重在 CUB/VTAB 低 1.7–1.9 个点——证实论文数值对应 download.sh 的 IN21k 权重。
+- 唯一代码改动：`load_model.py` **新增** `vit_base_patch16_224_in21k` 分支（原逻辑未动）。
+- 每任务训练时间（含 GCV 选 λ）：CIFAR ≈11.3s、CUB ≈2.6s、VTAB ≈1.4s（4090），印证低训练开销主张。
+- 完整逐任务精度矩阵日志：`results/official_framework/`（两种权重 × 三数据集共 6 份）；
+  汇总 `results/official_framework/summary.json`；运行入口 `official/run_all*.sh`。
+- 注：§1 上表的 86.28 是早期在**无 GPU 沙盒**中用 torchvision IN1k 权重跑出的结果，与
+  84.61（当时对论文表格的误读，实为其他体制的数值）的对比分析见 §5，历史结论保留供参考。
+
 ---
 
 ## 2. 环境配置
