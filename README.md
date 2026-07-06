@@ -2,115 +2,73 @@
 
 > 《机器学习导论》课程项目 · 持续学习（Continual Learning）
 >
-> - Level-1：用 **LibContinual 框架**复现 Fly-CL（ICLR 2026, arXiv:2510.16877），在 CIFAR-100 / CUB-200-2011 / VTAB 三个数据集上端到端跑通。
-> - Level-2：分析其果蝇/海马类脑机制，做一个 CLS 双系统扩展。
+> - **Level-1**：在 LibContinual 框架里复现 Fly-CL（ICLR 2026, arXiv:2510.16877），并在 CIFAR-100 / CUB-200-2011 / VTAB 三个数据集上跑通。
+> - **Level-2**：顺着它的果蝇/海马类脑思路，做几个机制分析，再动手加一个"双系统"扩展。
 
-Fly-CL 是一种基于预训练模型的持续表征学习方法：冻结骨干，用一层稀疏随机投影加赢者通吃（k-WTA），
-把分类重构为一次闭式的 ridge 回归读出。它无梯度、无重放，跨任务只累加充分统计量，因此在结构上不产生灾难性遗忘，训练开销也远低于需要迭代优化的同类方法。
+## 这个项目在做什么
 
-**本仓库把 Fly-CL 集成进 LibContinual 框架并在三个数据集上复现。** 具体地，算法按
-[LibContinual](https://github.com/RL-VIG/LibContinual) 的 `observe / inference / before_task / after_task`
-契约独立重写为 `core/model/flycl.py`，用框架自带的 `run_trainer.py` 端到端训练与评估。忠实性由一份独立的
-参照实现来对照（见 [§7](#7-忠实性验证参照实现与框架一致)）。
+持续学习要解决的老问题是：模型学了新任务，就把旧任务忘了（灾难性遗忘）。Fly-CL 给了一个很"讨巧"的答案——
+**根本不训练骨干**。它把一个预训练好的 ViT 冻住当特征提取器，然后只在最后加一层"读出"，而且这层读出是
+一次算出来的（闭式解），不用梯度下降、不用存旧数据回放。因为它每来一个任务只是往几个统计量上做加法，
+学到最后等价于"把所有见过的数据一次性拿来做回归"，跟任务先来后到没关系——所以它天生就不会遗忘。
 
----
+我们做的事情是：把这套算法按 LibContinual 框架的规矩重写一遍（`core/model/flycl.py`），用框架自带的入口
+跑三个数据集，看能不能对上论文的数；然后再往里挖一挖它的类脑机制。
 
-## 1. 结果速览
+## Fly-CL 长什么样
 
-### 1.1 LibContinual 框架复现（主结果，RTX 4090）
+它的灵感来自果蝇闻气味的神经回路，整个流程就三步：
 
-用 `run_trainer.py --config flycl{,_cub,_vtab}` 在 LibContinual 里端到端跑三个数据集，骨干是论文的
-IN21k augreg ViT-B/16（Fly-CL `pretrained_model/download.sh` 那份纯 IN21k 权重），超参与论文
-`test_{cifar,cub,vtab}.sh` 一致（M=10000、s=300、ρ=0.3、ridge 用 GCV 在 1e6–1e10 间自选、seed cifar=1993 /
-cub=vtab=2023）：
+![方法流水线](results/method_pipeline.png)
 
-| 数据集                 | 协议         | 论文 Ā (%)     | **LibContinual Ā (%)** | Last (%) | 差（vs 论文）  |
-| ------------------- | ---------- | ------------ | ---------------------- | -------- | --------- |
-| CIFAR-100           | 10 任务 ×10 类 | 93.89 ± 0.12 | **93.02**              | 89.46    | −0.87     |
-| CUB-200-2011        | 10 任务 ×20 类 | 93.84 ± 0.18 | **92.87**              | 87.79    | −0.97     |
-| VTAB（50 类）          | 5 任务 ×10 类  | 96.54 ± 0.38 | **96.16**              | 93.40    | −0.38     |
+1. **升维**：把 768 维的 ViT 特征，用一个稀疏的随机矩阵投到一万维。（对应果蝇把气味信号从少数投射神经元
+   扩展到大量的 Kenyon 细胞。）
+2. **稀疏化（k-WTA）**：只留下这一万维里最大的 30%，其余全置 0。（对应一个叫 APL 的神经元做全局抑制，
+   让编码变得又稀疏又干净。）
+3. **闭式读出**：每个任务把特征和标签的统计量累加起来，一次解个岭回归就得到分类权重。
 
-- **Ā（Accumulated / Average Incremental Accuracy）** 是各阶段整体精度 A_t 的均值，直接读 LibContinual 打印的
-  `[Batch] Overall Avg Acc`；**Last** 是学完最后一个任务后在全部类别上的整体精度 A_{T-1}。全部是类增量（`task-agnostic`，
-  推理不给任务 ID）。
-- 三个数据集都复现到论文 ±1 点以内。
-- 逐阶段 A_t 轨迹（`results/libcontinual_framework/A_t.csv`）：
-  - CIFAR：`[99.20, 96.60, 94.67, 94.33, 92.76, 91.55, 91.26, 90.17, 90.19, 89.46]`
-  - CUB：`[98.70, 95.82, 95.16, 94.22, 93.43, 92.42, 90.91, 90.64, 89.65, 87.79]`
-  - VTAB：`[98.48, 97.99, 95.55, 95.37, 93.40]`
-- 三个数据集每个任务 GCV 都选中 λ=1e6（候选下界）——IN21k 特征强、Gram 矩阵条件数好，只需最小正则。
-- 端到端墙钟（含真 ViT 前向 + 闭式解，单卡 4090）：CIFAR 348 s、CUB 203 s、VTAB 101 s。
-- 完整逐任务日志在 `results/libcontinual_framework/{flycl,flycl_cub,flycl_vtab}.log`，汇总见
-  `results/libcontinual_framework/summary.json`。
-
-### 1.2 方法对比（同一 IN21k 骨干下）
-
-在论文的 IN21k 冻结骨干下横比 Fly-CL 与两个常见 PTM 持续学习基线（CIFAR-100，同一批 GPU 提取的特征，`analysis_gpu.py`）：
-
-| 方法         | Ā (%)     | Last (%) |
-| ---------- | --------- | -------- |
-| **Fly-CL** | **93.95** | 89.87    |
-| RanPAC     | 93.90     | 89.76    |
-| NCM        | 85.41     | 79.28    |
-
-在强 IN21k 特征上 Fly-CL 与 RanPAC 基本并列（93.95 vs 93.90）——两者都是「随机投影 + 累加 ridge」，特征已经
-足够线性可分时会收敛到相近的上界；而不含投影/ridge 的 NCM（最近类均值）明显落后（85.41）。Fly-CL 相对 RanPAC
-的价值在稀疏投影 + k-WTA 带来的解相关（§10.1）和更低的接线/训练开销（每任务闭式解 ~4.4 s，GPU），在特征更弱、
-更相关时更容易拉开；在已经很干净的特征上，头部精度自然靠得很近。
-
-![精度与遗忘曲线](results/accuracy_curves.png)
-![我方 vs 原论文](results/comparison_bars.png)
+推理就是拿这层权重打分、取最大。没有 epoch 循环，没有优化器，一个任务几秒钟就学完了。
 
 ---
 
-## 2. 方法
+## 复现结果
 
-冻结 ViT-B/16 输出特征 `x ∈ ℝ^768`。三步，每一步都对应果蝇嗅觉环路的一个环节（PN→KC→APL→MBON）。
+### 三个数据集，都对上了论文（RTX 4090）
 
-![Fly-CL 方法流水线](results/method_pipeline.png)
+用框架入口端到端跑，骨干是论文那份 ImageNet-21k 预训练的 ViT-B/16，超参照搬论文脚本。主指标 **Ā** 是
+"每学完一个任务后，在见过的所有类上的平均准确率"再取平均——就是论文说的 Accumulated Accuracy。
 
-**(a) 稀疏随机投影（PN→KC）**：投影矩阵 `W ∈ ℝ^{M×768}`，每行随机选 s 列填 `N(0,1)`、其余为 0，
-`z = Wx ∈ ℝ^M`（M=10000 ≫ 768，升维）。
+| 数据集 | 论文 Ā | **我们的 Ā** | 差 |
+| --- | --- | --- | --- |
+| CIFAR-100 | 93.89 | **93.02** | −0.87 |
+| CUB-200-2011 | 93.84 | **92.87** | −0.97 |
+| VTAB | 96.54 | **96.16** | −0.38 |
 
-**(b) k-WTA 稀疏化（APL 侧抑制）**：保留 `z` 中最大的 `k = ⌈ρM⌉` 个分量，其余置 0，得稀疏码 `Φ(x)`。
-这一步模拟 APL 神经元对 KC 的全局抑制，让编码稀疏且去相关。
+三个都落在论文一个点以内。剩下的零点几个点差异，主要是两边把类分成任务的顺序不一样造成的（Fly-CL 学到的
+最终权重跟顺序无关，所以"学完最后"的精度两边几乎一致，是最能说明实现没问题的证据）。
 
-```
-values, idx = topk(z, k);  Φ = zeros_like(z);  Φ[idx] = values
-```
+### 换个角度：和两个常见方法比一比
 
-**(c) 累加式 ridge 读出（KC→MBON）**：每来一个任务 t 就累加统计量并闭式求解：
+同样冻结这份 IN21k 骨干，在 CIFAR-100 上横向比一下：
 
-```
-Q ← Q + Φ(X_t)ᵀ Y_t            # ℝ^{M×C}，互相关
-G ← G + Φ(X_t)ᵀ Φ(X_t)         # ℝ^{M×M}，Gram 矩阵
-λ ← GCV_select(...)            # 广义交叉验证自动选岭系数
-L = cholesky(G + λI); Wo = cholesky_solve(Q, L)
-```
+| 方法 | Ā | Last |
+| --- | --- | --- |
+| **Fly-CL** | **93.95** | 89.87 |
+| RanPAC | 93.90 | 89.76 |
+| NCM（最近类均值） | 85.41 | 79.28 |
 
-推理时 `ŷ = argmax(Φ(x) Wo)`。
+有意思的是，在这么强的特征上，Fly-CL 和 RanPAC 几乎打平——它俩本质都是"随机投影 + 岭回归读出"，特征
+已经够好时自然拉不开差距；而没有投影和岭回归的 NCM 就明显落后。Fly-CL 真正的长处不在这条已经很干净的
+赛道上的名次，而在于它稀疏的接线更省、k-WTA 让特征更"解耦"（后面 Level-2 会验证），以及特征更差时更抗打。
 
-**零遗忘从哪来。** `G` 和 `Q` 是对已见全部数据的充分统计量，跨任务只做加法。学完任务 t 时的 `Wo` 精确
-等于「把 0..t 所有数据一次性做 ridge 回归」的解，与任务到达顺序无关，也与是否分任务无关。所以旧类的读出
-权重不会被新任务覆盖，遗忘在结构上就是 0，这和需要经验回放或蒸馏去对抗遗忘的方法本质不同。这也是 §7 里
-参照实现能逐任务对齐、以及 Last 精度对任务顺序稳健的原因：不管任务顺序、不管用哪个框架，最终 Wo 都是同一个闭式解。
-
-**GCV 选岭。** 对候选 `λ ∈ {10^a}`，先做一次 SVD，再闭式算每个 λ 的广义交叉验证分数
-`GCV(λ) = ‖Y−Ŷ‖²/n / (1−df/n)²`，取最小者，避免了对 λ 网格重训。
-
-**复杂度。** 投影加 k-WTA 是 `O(N·s + N·M log k)`，无梯度无反传；ridge 的主成本是 `G`（M×M）的一次
-Cholesky，`O(M³)`，`G, Q` 增量累加 `O(N·M)`。整个流程没有 epoch 循环、没有优化器，这是训练时间低的根源。
-
-论文动机是：直接拿预训练特征做相似度匹配会遇到多重共线性（特征维度高度相关、Gram 矩阵病态），
-而白化、迭代优化一类的解相关手段对实时低延迟场景太重。Fly-CL 用稀疏投影加 k-WTA 在低复杂度下渐进
-消解共线性。这一机制的定量验证见 [§10.1](#101-k-wta-的解相关模式分离)。
+![精度曲线](results/accuracy_curves.png)
+![方法对比](results/comparison_bars.png)
 
 ---
 
-## 3. 环境配置
+## 怎么跑起来
 
-实验机：AutoDL RTX 4090（24 GB，CUDA 11.8），Python 3.10 / torch 2.1.2+cu118 / timm 0.9.16 /
-torchvision 0.16.2。从零建环境：
+**环境**（单卡就够，Fly-CL 冻骨干 + 闭式解，不吃显存）：
 
 ```bash
 conda create -n flycl python=3.10 -y && conda activate flycl
@@ -119,330 +77,165 @@ pip install "timm==0.9.16" numpy scipy pandas scikit-learn matplotlib pyyaml tqd
             ftfy regex continuum "diffdist==0.1"
 ```
 
-后面这几个包不是 Fly-CL 本身要的，而是 LibContinual 的 `core/model/__init__.py` **一次性 import 了全部 ~30 种
-算法**：CLIP 类方法要 `ftfy/regex`、数据工具要 `continuum`、OCM 分布式要 `diffdist`，缺了在加载阶段就
-`ModuleNotFoundError`，即使只跑 Fly-CL 也得装齐。国内取 timm 权重走 `HF_ENDPOINT=https://hf-mirror.com`，
-离线加载设 `HF_HUB_OFFLINE=1`。整套复现只需单卡，Fly-CL 冻结骨干 + 闭式解，无需多卡或大显存。
+后面那串包其实不是 Fly-CL 要用的，而是 LibContinual 启动时会把它自带的三十来种算法全部 import 一遍，
+缺哪个都起不来，所以得一起装上。
 
----
-
-## 4. 数据与权重
-
-**数据布局**（LibContinual `data_root` 指向的 `data/`，服务器上 `./data` 软链到数据盘）：
-
-```
-data/
-  cifar-100-python/     # 标准 cifar-100-python pickle（train/test/meta），binary_cifar100 直接读
-  cub/{train,test}/     # ImageFolder，200 类
-  vtab/{train,test}/    # ImageFolder，50 类
-```
-
-- **CIFAR-100**：LibContinual 的 `binary_cifar100` 读取标准 `cifar-100-python/{train,test}` pickle。若本地那份 md5
-  与 torchvision 期望不符会触发慢速重下载，建议用官方原版 tar.gz（`data/cifar-100-python-official.tar.gz`，
-  md5 eb9058c3…）。
-- **ViT-B/16 权重**：论文用 timm `augreg` IN21k。从 Fly-CL 的 `pretrained_model/download.sh` 拿那份纯 IN21k 权重：
-  `wget https://storage.googleapis.com/vit_models/augreg/B_16-i21k-300ep-lr_0.001-aug_medium1-wd_0.1-do_0.0-sd_0.0.npz`，
-  放到 `LibContinual/assets/vit_b16_augreg_in21k.npz`。`vit_flycl` 骨干用 timm 的 `_load_weights` 加载这份 JAX npz。
-  国内也可从镜像取 timm safetensors：`HF_ENDPOINT=https://hf-mirror.com hf download timm/vit_base_patch16_224.augreg_in21k`。
-- **权重的一个坑**：timm 0.9.16 里 `create_model(pretrained=True)` 默认拉的是 `augreg2_in21k_ft_in1k`（IN21k
-  预训练后又在 IN-1k 上微调），不是论文用的纯 IN21k augreg。经验上纯 IN21k 权重在 CUB/VTAB 上高 1.7–1.9 个点，
-  §1.1 的结果对应的正是纯 IN21k 权重；所以 `vit_flycl` 显式用 `_load_weights` 加载 download.sh 那份 npz，而不走
-  timm 的 `pretrained=True` 默认分支。
-
-§1.1 的三数据集复现、§1.2 的基线对比、§8 的消融与 §10 的 Level-2 分析全部用同一份 IN21k augreg 权重，
-特征由 GPU 现场提取，不再依赖任何 CPU 侧的特征缓存。
-
----
-
-## 5. 运行
+**跑三个数据集**：
 
 ```bash
 cd LibContinual
-# assets/ 下放好 vit_b16_augreg_in21k.npz，data/ 指向三个数据集
-export HF_HUB_OFFLINE=1
 python run_trainer.py --config flycl        # CIFAR-100
 python run_trainer.py --config flycl_cub    # CUB-200-2011
 python run_trainer.py --config flycl_vtab   # VTAB
 ```
 
-`device_ids: auto` 会自动挑最空闲的 GPU；`n_gpu: 1` 单卡。最终读 `[Batch] Overall Avg Acc` 即 Ā。
-三份配置对应 `config/flycl{,_cub,_vtab}.yaml`，超参对齐论文 `test_*.sh`，只是把 `testing_times` 设成 1
-（Fly-CL 是确定性闭式解，框架默认重复评估 10 次纯属浪费，设 1 数值完全等价）。
+跑完看日志里的 `[Batch] Overall Avg Acc` 就是 Ā。一键顺序跑三个：`bash run_flycl_all.sh`。
 
-一键顺序跑三数据集：`bash run_flycl_all.sh`（`results/libcontinual_framework/` 里的日志即由该流程产生）。
-
-§1.2 的基线对比、§8 的消融与 §10 的 Level-2 分析由 `analysis_gpu.py` 一次跑完——它在 GPU 上用同一份 IN21k 骨干
-提取 CIFAR 特征（内存里，不落 CPU 缓存），再算基线 / 消融 / 解相关 / 遗忘分解 / CLS-Fly 并出图：
+**Level-2 的分析和消融**由 `analysis_gpu.py` 一次算完（在 GPU 上现场提特征，不落缓存）：
 
 ```bash
 python analysis_gpu.py --weights assets/vit_b16_augreg_in21k.npz --data-root ./data
 ```
 
-结果在 `results/`（`all_methods.json`、`ablation_all.json`、`decorrelation_analysis.json`、
-`forgetting_decomposition.json`、`clsfly*.json`、`level2_gpu_summary.json` 及对应 png）。
+数据放在 `data/` 下（`cifar-100-python/`、`cub/{train,test}/`、`vtab/{train,test}/`），权重是论文那份纯 IN21k
+的 ViT-B/16（从 Fly-CL 官方的 `download.sh` 拿，放到 `assets/`）。
 
 ---
 
-## 6. 集成进 LibContinual
+## 怎么塞进 LibContinual 框架的
 
-### 6.1 框架的模型契约
+LibContinual 里每个算法都是一个模块，实现四个约定好的方法：任务开始时 `before_task`、每个 batch 走
+`observe`、任务结束 `after_task`、评估走 `inference`。Fly-CL 对号入座很自然：`observe` 里冻结前向抽特征、
+先攒着；`after_task` 里做投影、稀疏化、累加统计量、解岭回归；`inference` 里打分取最大。因为它没有梯度，
+框架默认那套"反向传播 + 优化器"对它就是空转，不冲突。
 
-LibContinual 里每个算法都是一个 `nn.Module`，实现下面几个接口。Trainer 的任务循环是：每个任务先 `before_task`，
-按 batch 调 `observe` 并做 `loss.backward()/optimizer.step()`，任务末调 `after_task`，然后在已见任务上调 `inference` 评估。
-
-| 契约方法              | Fly-CL 的落点                                                        |
-| ----------------- | ----------------------------------------------------------------- |
-| `before_task`     | 初始化本任务的特征缓冲                                                       |
-| `observe(data)`   | 冻结前向抽特征、暂存，返回 `(None, 0.0, dummy_loss)`；dummy 是 `requires_grad` 的 0，让 `loss.backward()` 成为无害空操作 |
-| `after_task`      | 投影 + k-WTA → 累加 G/Q → GCV 选 λ → Cholesky 求 Wo                     |
-| `inference(data)` | `argmax(Φ Wo)`，对全部读出列取 argmax（类增量）                               |
-
-`data` 是 dict，`data['image']`（BCHW）和 `data['label']`（全局标签）。因为 Fly-CL 无梯度，它与 Trainer
-默认的反传循环不冲突：真正的「学习」发生在 `observe` 的统计累加和 `after_task` 的闭式求解里。
-
-### 6.2 为跑通框架所做的改动
-
-原仓库里的 LibContinual 子集缺了几样东西，Fly-CL 之所以此前跑不了 `run_trainer.py`，就是卡在这里。本次补齐：
-
-- **`config/headers/{data,device,model,optimizer,test}.yaml`**：`core/config/default.yaml` 通过 `includes:`
-  引用这五个 header 提供 `device_ids / n_gpu / testing_times / pin_memory` 等默认键，缺了会在加载配置时直接
-  KeyError。已按官方 LibContinual 的内容补齐。
-- **`config/flycl{,_cub,_vtab}.yaml`**：三数据集配置，权重指向 `assets/vit_b16_augreg_in21k.npz`（纯 IN21k），
-  `testing_times: 1`。
-- **`core/model/flycl.py` / `core/model/backbone/vit_flycl.py`**：Fly-CL 分类器与冻结 ViT-B/16 骨干，
-  并在 `core/model/__init__.py` 注册。
-- 数据侧无需改动：`binary_cifar100` 读 CIFAR pickle，`cub/vtab` 走 ImageFolder，train/test 共享同一 `cls_map`。
-
-### 6.3 评估口径
-
-- **A_t**：学完任务 t 后，对已见任务 0..t 的整体准确率。
-- **Ā（Accumulated / Average Incremental Acc）**：`mean_t(A_t)`，Fly-CL 论文口径，= 框架的 `[Batch] Overall Avg Acc`。
-- **Last Acc**：学完最后一个任务后的整体准确率 `A_{T-1}`。
-- 框架先在任务内做一次 in-epoch 验证（此时本任务的闭式解还没算，用的是上一任务的 Wo，属正常现象），
-  真正计入 `acc_table` 的 A_t 是 `after_task` 之后的评估，用的是刚解出的新 Wo，口径正确。
+一个小插曲：仓库里这份 LibContinual 是个裁剪过的子集，缺了几个配置文件（`config/headers/*.yaml`），
+导致框架一加载配置就报错、根本跑不起来。补齐之后才真正端到端跑通——这也是为什么之前只能靠离线脚本。
 
 ---
 
-## 7. 忠实性验证：参照实现与框架一致
+## 往深里挖：它的类脑机制（Level-2）
 
-`analysis_gpu.py` 里独立实现了论文 `main.py` 的算法（稀疏投影 + k-WTA + 累加 ridge / GCV / Cholesky）作参照。
-用论文的随机划分协议（seed 1993），它在 CIFAR-100 IN21k 特征上给出 **Fly-CL Ā=93.95、Last=89.87**，与论文
-Table 1 的 93.89 吻合。因为 Fly-CL 的最终 Wo 与任务顺序无关，这个 Last 精度也和 §1.1 里 LibContinual 框架
-`core/model/flycl.py` 端到端跑出的 Last（89.46，自然划分）落在同一水平——不管用哪个框架、哪种任务顺序，
-学到的都是同一个闭式解。这是判断实现忠实与否最紧的判据。
+Fly-CL 借的是果蝇蘑菇体的模式分离思路，这跟海马体、跟"互补学习系统（CLS）"理论其实是一套东西：
+**先把信号铺到高维、再用抑制把它稀疏化，就能得到一份彼此不打架的编码，让最简单的线性读出也够用。**
+我们围绕这个想法问了三个问题。
 
-修复过程中改掉过一个推理 bug：类顺序被 shuffle 时，应对全部读出列取 argmax，而不是前 N 列。
+### 问题一：k-WTA 真的让特征"解耦"了吗？是投影还是稀疏化在起作用？
 
----
+![解相关分析](results/decorrelation_analysis.png)
 
-## 8. 消融
+衡量"特征维度之间有多黏"，看它们的平均相关。结果很清楚：
 
-![超参消融](results/ablation.png)
+| 阶段 | 平均相关 |
+| --- | --- |
+| 原始 ViT 特征 | 0.052 |
+| 只做随机投影 | 0.104（反而翻倍） |
+| 投影 + k-WTA | 0.060（比只投影低 43%） |
 
-| 超参    | 扫描         | 发现                                                                                 |
-| ----- | ---------- | ---------------------------------------------------------------------------------- |
-| 扩展维 M | 1000→20000 | 单调升、饱和：91.92 → 92.81 → 93.58 → 93.95 → 94.16。M 越大解相关空间越充分，但 Cholesky 是 O(M³)，M=10000 是性价比点 |
-| 编码率 ρ | 0.05→1.0   | 峰值 ρ=0.5（93.72）。ρ=1.0（去掉 k-WTA、完全稠密）降到 93.09 < 峰值，直接说明 k-WTA 的稀疏化确实有用；ρ=0.05 过稀疏也差（92.04）      |
-| 突触度 s | 8→768      | 单调升、饱和：92.87 → 93.37 → 93.58。稀疏 s=300（93.58）已达到甚至略超稠密 s=768（93.44），量化了果蝇稀疏接线的效率                  |
+**光靠随机投影不解耦，甚至更黏；真正解耦的是 k-WTA 这一步竞争性的稀疏化。** 这挺符合直觉——随机线性
+投影只是把东西搅在一起，几何上该黏还黏；是"赢者通吃"这个非线性的挑选动作，才把冗余压了下去。生物为什么
+不只是把维度铺大、还要加抑制，道理就在这。（顺带一提，k-WTA 改善的是"线性读出好不好解"，不是"看起来
+类分不分得开"，后者其实还变差了——这两件事不是一回事。）
 
----
+### 问题二：它测出来的"遗忘"，是真忘了吗？
 
-## 9. 差距分析
+拿学完全部 10 个任务后的权重，回头考任务 0 的题：
 
-§1.1 的 LibContinual 复现在三个数据集上都落在论文 ±1 点内（CIFAR −0.87、CUB −0.97、VTAB −0.38）。
-这里解释残差从哪来，为什么它不是算法层面的问题。
+| 怎么考 | 分数 |
+| --- | --- |
+| 刚学完任务 0（只在它那 10 类里选） | 98.4% |
+| 学完全部后，还是只在任务 0 那 10 类里选 | 97.6% |
+| 学完全部后，在全部 100 类里选 | 89.4% |
 
-**(1) 任务划分顺序。** 论文的 `main.py` 用一个 seeded 随机置换把 100/200/50 个类分组成任务；LibContinual 的
-`binary_cifar100` 按自然标签序（0–9, 10–19, …）分组，`cub/vtab` 按 ImageFolder 排序 + 框架 seed 的置换。
-因为 Fly-CL 的最终 Wo 与顺序无关，**Last 精度几乎不受影响**，但 Ā = mean_t A_t 是对增量轨迹取均值，轨迹依赖
-每个阶段有哪些类，所以 Ā 会有零点几个点的差。这是协议约定差异，不是实现错误。
+看着掉了 9 个点，但拆开看：如果还在原来 10 个类里选，几乎没掉（98.4→97.6，只掉 0.8）。**掉的那 9 个点里，
+真正的"忘"只有不到 1 个点，剩下 8 个点是因为选择题从 10 选 1 变成了 100 选 1——题目本身变难了。**
+所以曲线往下走，大部分是任务变难，不是知识丢了。这跟梯度类方法那种真·灾难性遗忘是两码事。
 
-**(2) 随机投影的抽样方式。** 本实现按行 `torch.randperm` 采 s 个非零列；同一 seed 下不同构造画出的 W 略有不同，
-导致 Wo 及各处精度有 ~0.5 点的抖动。§7 的参照实现给出 93.95，说明这类抖动来自投影抽样而非算法。
+### 问题三：加一个"海马快系统"有用吗？（CLS-Fly 扩展）
 
-**(3) 骨干与读出方式决定绝对精度。** §1.2 在同一 IN21k 骨干下，Fly-CL 与 RanPAC 几乎并列（93.95 vs 93.90），
-而不含投影/ridge 的 NCM 落后近 8 点（85.41）。可见在基于预训练模型的持续学习里，特征质量（骨干）与读出方式
-（有无累加 ridge）对绝对精度的影响，往往大于两种随机投影方法之间的差别。
+CLS 理论说，除了慢慢巩固的"新皮层"，还得有个快速、灵活的"海马"来临时兜底。对应过来：Fly-CL 的岭回归读出
+就是慢系统，我们再给每个类维护一个"原型"当快系统，两边加权融合。
 
-由此有个方法论上的观察：评估一个算法的贡献，应当控制骨干、看解相关质量、遗忘与开销（§10、§8），
-而不是只盯着绝对 Ā。Fly-CL 在头部精度与 RanPAC 打平，价值体现在 k-WTA 的解相关（§10.1）和稀疏低开销上。
+![CLS-Fly 扩展](results/clsfly_extension.png)
 
----
+结果有点"扫兴"但很诚实：在论文这么强的特征上，慢系统（岭回归）本来就已经很强了，加原型几乎没用（增益不到
+0.1 个点，在噪声里），纯用慢系统基本处处最优。但方向是对的——只有当慢系统"吃紧"（读出容量小、信息不够）时，
+快系统才有补位的空间。这其实正好印证了 CLS 的一个预言：**皮层表征越好，就越不需要海马兜底。** 换句话说，
+特征越强，持续学习就越是"慢系统一家独大"，快系统显得多余。
 
-## 10. Level-2：类脑机制分析与扩展
+### 小结
 
-以 Fly-CL 的果蝇嗅觉环路为起点，结合海马-新皮层互补学习系统（Complementary Learning Systems, CLS）理论，
-做两项机制分析和一个扩展。三个尺度上都是「稀疏 + 互补」：果蝇蘑菇体（PN→KC 扩展 + APL 抑制）做气味模式分离，
-海马齿状回（内嗅→DG 扩展 + 强抑制）做记忆模式分离，海马-新皮层（快速稀疏编码 + 慢速巩固）避免灾难性遗忘。
-Fly-CL 已经实现了前两者（KC/DG 的模式分离），它的累加式 ridge 读出天然顺序无关，对应 CLS 里新皮层慢速稳定
-的一面，但缺一条显式的海马快速通路，§10.3 把它补上。
+三个问题串起来是一句话：**扩展 + 抑制 → 模式分离**，是果蝇、海马乃至 CLS 共享的一招；而"快慢互补"只在
+慢系统不够用时才有意义。这一路也和前面的观察呼应——在预训练大模型的时代，特征本身的好坏，往往比算法上的
+花样更能决定成败。
 
-### 10.1 k-WTA 的解相关（模式分离）
-
-问题：Fly-CL 声称稀疏投影加 k-WTA 能消解多重共线性，这真的发生了吗，是投影还是 k-WTA 起作用？
-
-方法：在 CIFAR-100 训练特征的类均衡子集（2000 样本）上，测特征维度间的平均 |非对角相关|（多重共线性的代理指标）。
-
-![类脑解相关分析](results/decorrelation_analysis.png)
-
-| 阶段               | 平均 \|非对角相关\|         |
-| ---------------- | -------------------- |
-| 原始 ViT 特征（768-d） | 0.0524               |
-| 稠密随机投影（5000-d）   | 0.1044（翻倍升高）         |
-| 投影 + k-WTA       | 0.0598（比稠密投影低 42.7%） |
-
-结论：解相关来自 k-WTA，不是投影本身。随机稠密投影只是线性混合，把平均相关从 0.052 抬到 0.104；是 k-WTA 的
-竞争性稀疏化（赢者通吃即 APL 全局抑制）又把它压回 0.060，压下了维度间的冗余共线性。这正对应 KC/DG 的模式分离。
-k-WTA 后群体活动率恰为 ρ=0.3，与生物 KC 的低活动率一致。
-
-补充一点，k-WTA 降低的是特征维度的多重共线性（改善 ridge 读出的矩阵条件数，这才是精度提升的来源），
-而不是原始余弦几何上的类间可分度——后者在 k-WTA 后并未变好（类内 0.50→0.56，类间 0.45→0.67，类间相似度反而升得更多）。
-两者是不同的量。§8 里 ρ=1.0 去掉 k-WTA 使 Ā 从 93.72 降到 93.09，从任务精度侧独立佐证了前者。
-
-### 10.2 遗忘分解
-
-问题：Fly-CL 测得任务0 的「遗忘」是 9.0%，看着不小，这到底是不是灾难性遗忘？
-
-方法：用学完全部 10 个任务后的最终读出权重 Wo，对任务0 的测试样本分别在全部 100 类、以及仅任务0 的 10 类内
-评分，与任务0 刚学完时比较。
-
-| 评分方式                           | 任务0 精度 |
-| ------------------------------ | ------ |
-| 刚学完任务0（10 类）                   | 98.4%  |
-| 学完 10 任务后，仅在任务0 的 10 类内评分      | 97.6%  |
-| 学完 10 任务后，在全部 100 类评分（报表「最终」值） | 89.4%  |
-
-结论：任务0 的读出权重在学完所有任务后几乎完好（97.6 vs 98.4，只掉 0.8%）。9.0% 的「遗忘」里只有约 0.8%
-是真实的表征/权重遗忘，其余约 8.2% 来自标签空间增长（判别问题从 10 类变成 100 类，混淆机会变多）。这与梯度
-类方法的灾难性遗忘有本质区别：G、Q 是全部历史数据的充分统计量，跨任务只做加法，顺序无关，旧类权重不被覆盖。
-换句话说，遗忘曲线的下降大部分是任务变难，而非知识丢失。
-
-### 10.3 CLS-Fly 扩展
-
-动机：Fly-CL 的 ridge 读出对应「新皮层慢系统」。CLS 理论认为还需要一个海马快系统——快速、稀疏、高可塑的
-即时记忆，在数据不足时提供补充信号。
-
-设计：
-
-- 慢系统（新皮层，精确）：Fly-CL 原本的累加式 ridge 读出 Wo，顺序无关、渐近最优。
-- 快系统（海马巩固原型）：在 KC 稀疏空间里，每类维护一个巩固的类原型（稀疏码均值）。
-- 融合：`logits = (1−β)·标准化(ridge_logits) + β·标准化(prototype_cosine)`。
-
-![CLS-Fly 双系统扩展](results/clsfly_extension.png)
-
-结果：
-
-- 充分定域（M=5000）：β=0（纯 Fly-CL）= 93.58 最优，加入原型只会单调降低精度（β=1.0 纯原型仅 85.57）。
-  精确的 ridge 已经最优，粗糙原型只是稀释。
-
-- 欠定域（小 M，ridge 欠定、噪声大）：
-
-  | M    | 纯 Fly-CL（β=0） | 最优融合          | 增益    |
-  | ---- | ------------- | ------------- | ----- |
-  | 300  | 87.68         | β=0.2 → 87.70 | +0.02 |
-  | 500  | 90.04         | β=0.0 → 90.04 | +0.00 |
-  | 1000 | 91.92         | β=0.2 → 91.94 | +0.02 |
-
-结论：在论文的 IN21k 强特征下，ridge 读出本已非常强，快系统原型带来的增益几乎消失（≤0.02，在噪声内），
-β=0 基本处处最优。方向仍与 CLS 预测一致——只有当慢系统（ridge）欠定时快系统才可能有补充——但特征越强、
-越线性可分，这条互补通路的补充空间就越小；要它显著发挥作用，得在更弱、更相关、慢系统更吃紧的特征上。
-
-局限：本扩展停在读出层的原型巩固。更完整的 CLS 还可以引入 (i) 海马式经验回放（在 KC 空间重放稀疏码）、
-(ii) 睡眠期离线巩固（周期性把快系统知识蒸馏进 ridge）、(iii) 基于新颖度的可塑性门控（模式分离度决定学习率）。
-
-### 10.4 小结：三个尺度共享的计算原理，与「按需互补」的边界
-
-把三个实验串起来，Level-2 想说的是一条贯穿果蝇蘑菇体、海马齿状回、乃至整个 CLS 的**统一计算原理**：
-**升维扩展 + 竞争性抑制 → 模式分离 → 得到一个解相关、近正交的稀疏码，让下游最简单的线性读出就够用。**
-
-- **扩展**（PN→KC 的 768→M、内嗅→DG）负责把样本推到高维、拉开距离；
-- **抑制/竞争**（APL 的 k-WTA、DG 的强反馈抑制）才是真正解相关的那一步——§10.1 的关键发现正在于此：
-  随机线性投影本身不解相关，甚至把平均相关从 0.052 抬到 0.104（符合 Johnson–Lindenstrauss「随机投影近似保距」
-  的直觉），是 k-WTA 这个**非线性竞争**把冗余压了下去（−42.7%）。生物为什么要用抑制、而不只是把维度铺大，
-  道理就在这里：解相关来自「赢者通吃」的竞争，不来自线性混合。
-- 一个反直觉的提醒（§10.1 补注）：k-WTA 改善的是「线性读出好不好解」的条件数，不是「余弦上看着分不分得开」——
-  后者在 k-WTA 后反而变差。对线性系统有利的量（去共线性）和朴素的几何直觉（余弦可分）是两回事，这也是
-  Fly-CL 的精度增益容易被误解为「让类更分开」的原因。
-
-§10.3 则划出了「互补」的**边界条件**：快/慢两套系统并非永远互补，快系统只在慢系统欠定、吃紧时才有价值。
-我们把 M（读出容量）当旋钮：M 越大 ridge 越充分，融合增益越趋近 0；在论文的强 IN21k 特征上，即便 M 小到 300，
-ridge 也已足够强，快原型的补充 ≤0.02（噪声内）。这不是「扩展失败」，恰是 CLS 的一个**正向预言**——皮层表征越好，
-对海马快通路的依赖越低（正如记忆巩固完成后，海马损伤对旧记忆的影响变小）。反过来说：**越强的骨干，越把持续
-学习推向「慢系统一家独大」的区域**，这也呼应 §9 的观察——PTM 时代，特征质量常常盖过算法花样。
+局限：我们的快系统只做到了"读出层的类原型"这一层。更完整的 CLS 还能加经验回放、睡眠期巩固、按新颖度调
+学习率等，这些留作后续。
 
 ---
 
-## 11. 代码结构
+## 消融
+
+![消融](results/ablation.png)
+
+扫了三个超参，结论都符合预期：
+
+- **升维维度 M**：越大越好但会饱和（1000→94.16，一万是性价比点），代价是解岭回归的开销随 M 立方涨。
+- **稀疏率 ρ**：留 30%~50% 最好；留 100%（等于不做 k-WTA）反而更差——又一次说明稀疏化确实有用。
+- **接线稀疏度 s**：每维只连 300 根（而不是全连 768 根）精度基本不掉，量化了"稀疏接线"的高效。
+
+---
+
+## 踩过的坑
+
+| 现象 | 原因 | 解决 |
+| --- | --- | --- |
+| 框架一加载配置就 KeyError | 仓库里的 LibContinual 缺了 `config/headers/*.yaml` | 按官方补齐（本次已修） |
+| 评估慢得离谱（重复十遍） | 框架默认对随机方法测 10 次取平均；Fly-CL 是确定性的，纯浪费 | 配置里设 `testing_times: 1`，数值完全一样 |
+| 精度就是对不上论文 | timm 默认拉的权重是"IN21k 再微调 IN1k"，不是论文那份纯 IN21k | 显式加载官方 `download.sh` 那份 npz |
+| `ModuleNotFoundError` 一堆 | 框架启动会 import 全部算法 | 把 `ftfy/continuum/diffdist` 等一起装上 |
+| CIFAR-100 下载龟速 | 本地那份校验和对不上，触发重下 | 用官方原版的 tar.gz |
+| GPU 提特征却很慢 | 瓶颈在 CPU 把 32×32 放大到 224×224，不是 GPU | 提一次缓存起来，重跑就快了 |
+
+---
+
+## 一些想法
+
+**Fly-CL 到底强在哪？** 一开始看到它和 RanPAC 打平，会怀疑那套稀疏投影是不是花架子。但想通一件事就清楚了：
+这类方法都建立在"冻一个强骨干、只学一层读出"之上，于是持续学习被简化成了"在攒起来的统计量上做一次回归"。
+在这个前提下，最终精度主要由骨干好坏和"有没有岭回归"决定，两种随机投影之间当然拉不开。Fly-CL 的价值不在
+这条饱和赛道上的名次，而在更省、更抗噪、有生物学解释的解耦机制。评一个方法，得看它在什么条件下赢，
+而不是盯着一个已经到顶的数字。
+
+**"不会遗忘"是一种范式差异。** EWC、回放、蒸馏都是在"对抗"遗忘——想办法拦住新任务把旧知识覆盖掉。
+Fly-CL 不对抗，它结构上就没有遗忘：统计量只做加法，学到哪一步都等价于把见过的数据一次性回归。它相当于
+把"持续学习"偷偷换成了"在不断变大的数据上重新批量学习"。
+
+**复现的意义，是搞懂这个数为什么是这样。** 真正的收获不是三个"对上了"，而是沿途搞明白的那些为什么：
+为什么正则项每次都选最小（特征够好，不太需要正则）；为什么"学完最后"的精度比平均精度更适合验证实现对不对
+（它跟任务顺序无关，两套独立写的代码必然对上）；为什么权重非得是纯 IN21k 那份。一个对上的数字，配上
+"为什么会对上"，复现才算完成。
+
+整个项目也从最初"官方框架 + CPU 缓存特征"一路收敛到"就在 LibContinual 里、GPU 端到端、同一份骨干"，
+让 Level-1 的复现和 Level-2 的分析站在完全一致、能一键重跑的同一个基线上。
+
+---
+
+## 目录
 
 ```
-LibContinual/                         主路径：Fly-CL 集成进 LibContinual
-  run_trainer.py                        框架入口（--config flycl{,_cub,_vtab}）
-  run_flycl_all.sh                      一键顺序跑三数据集
-  core/model/flycl.py                   Fly-CL 分类器（按框架契约重写）
-  core/model/backbone/vit_flycl.py      冻结 ViT-B/16 骨干（timm IN21k npz / torchvision pth）
-  core/model/__init__.py                注册 FlyCL
-  core/config/default.yaml              includes: headers/*
-  config/headers/*.yaml                 补齐的框架默认键（device/data/model/optimizer/test）
-  config/flycl.yaml                     CIFAR-100 配置（超参对齐论文 test_cifar.sh）
-  config/flycl_cub.yaml, flycl_vtab.yaml
-  assets/vit_b16_augreg_in21k.npz       论文 IN21k augreg 权重（本地，未入库）
-
-analysis_gpu.py                       GPU 原生分析：IN21k 特征提取 + 基线（§1.2）+ 消融（§8）+ Level-2（§10）+ 出图
-tests/                                sanity check 与框架加载冒烟测试
-results/
-  libcontinual_framework/               §1.1 主结果：三数据集端到端日志 + summary.json + A_t.csv
-  *.json / *.csv / *.png                消融、Level-2、对比图表
+LibContinual/                       主路径：Fly-CL 集成进框架
+  run_trainer.py, run_flycl_all.sh    入口 / 一键跑三数据集
+  core/model/flycl.py                 Fly-CL 算法（按框架契约重写）
+  core/model/backbone/vit_flycl.py    冻结的 ViT-B/16 骨干
+  config/flycl*.yaml, config/headers/ 三数据集配置 + 补齐的框架默认项
+analysis_gpu.py                     GPU 分析：基线 + 消融 + Level-2 + 出图
+results/                            日志、结果、图表
+tests/                             自检脚本
 ```
-
----
-
-## 12. 踩坑记录
-
-| 现象                                                    | 原因                                           | 解决                                                                                      |
-| ----------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `run_trainer.py` 加载配置就 KeyError（device_ids / n_gpu 等） | 仓库里的 LibContinual 子集缺 `config/headers/*.yaml` | 按官方补齐五个 header（本次已修）                                                                     |
-| 框架默认 `testing_times: 10`，评估慢 10×                       | 对随机方法做多次平均；Fly-CL 是确定性闭式解，重复评估纯浪费           | 配置里设 `testing_times: 1`（数值完全等价）                                                          |
-| timm `pretrained=True` 权重与论文对不上                        | 0.9.16 默认拉 augreg2_in21k_ft_in1k，非论文的纯 IN21k | 显式用 `_load_weights` 加载 download.sh 的 `B_16-i21k-300ep-…npz`（见 §4）                        |
-| `ModuleNotFoundError: ftfy/diffdist/continuum`        | 框架 import 链触及 CLIP/OCM 模块                    | `pip install ftfy regex continuum diffdist==0.1`                                        |
-| CIFAR-100 下载龟速                                        | 本地那份 md5 与官方不符，触发 torchvision 重下载            | 用官方原版 tar.gz（`data/cifar-100-python-official.tar.gz`，md5 eb9058c3…）                     |
-| GPU 提特征却很慢（CIFAR 6 万张 ~9 min）                          | 瓶颈在 CPU 侧把 32×32 BICUBIC 放大到 224×224，不是 GPU 前向 | `analysis_gpu.py` 提取一次后缓存到 `.feat_cache/`，重跑秒级；也可加大 DataLoader 并行                       |
-| 参照实现算出的 Ā/A_t 数值错乱或越界                                  | 逐阶段索引写错：阶段 j 上任务 st 的精度是 `acc[st][j-st]`，误写成 `acc[st][j]`（`acc[st]` 长度随任务增长） | 已修正为 `acc[st][j-st]`（`analysis_gpu.py` 的 `acc_metrics`）                                 |
-
----
-
-## 13. 总结与思考
-
-**1. Fly-CL 到底贡献了什么？** §1.2 里 Fly-CL 与 RanPAC 在强特征上几乎打平（93.95 vs 93.90），一度让人怀疑
-稀疏投影 + k-WTA 是不是「花架子」。把它放进 PTM 持续学习的大背景看会更清楚：这一类方法（Fly-CL / RanPAC /
-NCM）的共同前提是**冻结一个强骨干、只学一层读出**，于是「持续学习」被还原成「在累加的充分统计量上做一次线性
-回归」。在这个前提下，头部精度主要由骨干和「有没有 ridge」决定（NCM 落后近 8 点就是证据），两种随机投影之间
-自然拉不开。Fly-CL 的真正卖点不在这条已经很干净的赛道上的名次，而在：**(i)** k-WTA 的显式解相关（§10.1，
-一个有生物学解释、且在特征更弱/更相关时更管用的机制）；**(ii)** 稀疏接线（s=300≪768）带来的存储/算力优势而
-精度不掉（§8 的 s 扫描）；**(iii)** 闭式、无梯度、每任务几秒的低延迟。评一个方法，要看它在什么条件下赢，
-而不是只看一个已经饱和的绝对数。
-
-**2.「结构性无遗忘」是一种范式差异。** EWC、回放、蒸馏都在**对抗**遗忘——用正则、旧样本、软标签去拦住梯度对
-旧知识的覆盖。Fly-CL 不对抗，它**在结构上就没有遗忘**：G、Q 是对全部历史数据的充分统计量，跨任务只做加法，
-任意时刻的 Wo 精确等于「把已见数据一次性批量回归」的解，与到达顺序无关（§2、§7）。它把持续学习偷换成了「在
-不断长大的统计量上的批学习」。§10.2 进一步说明：它测到的那点「遗忘」（9.0%）几乎全是标签空间从 10 类涨到
-100 类带来的判别变难（8.2%），真正的知识丢失只有 0.8%。这提醒我们：**CIL 曲线往下掉，不等于灾难性遗忘**——
-很多时候只是任务变难了。
-
-**3. 复现不是对上一个数，而是搞懂这个数为什么是这样。** 这次复现真正的收获不是三个 ±1 点的对齐，而是沿途逼出来
-的理解：为什么 GCV 每个任务都选 λ=1e6 的下界（IN21k 特征条件数好，几乎不需要正则）；为什么 Last 精度比 Ā 更
-适合当忠实性判据（Wo 顺序无关 → Last 与协议无关 → 两套独立实现必然对齐，§7）；为什么权重必须是纯 IN21k 而非
-timm 默认的 ft_in1k（§4、§12 的坑）。一个「对上了」的数字，只有配上「为什么会对上」，复现才算完成。
-
-**4. 方法论收获。** 在 PTM 持续学习里，骨干选择对绝对精度的影响往往大于算法本身，评估应当控制骨干，看相对增益、
-解相关质量、遗忘与开销，而不是只盯绝对 Ā。工程上我们用两条独立实现（框架内 `flycl.py` 与参照 `analysis_gpu.py`）
-互相校验，把「顺序无关的 Last 精度是否吻合」当作最紧的正确性判据——它比盯某个绝对 Ā 更能暴露实现 bug（例如这次
-改掉的 `acc_metrics` 逐阶段索引错位）。整个项目也从「官方框架 + CPU 特征缓存」一路收敛到「LibContinual 框架内、
-GPU 端到端、同一份 IN21k 骨干」，让 Level-1 复现与 Level-2 分析建立在完全一致、可一键重跑的基线上。
-
----
 
 **论文**：Zou, Zang, Xu, Ji. *Fly-CL: A Fly-Inspired Framework for Enhancing Efficient Decorrelation and
-Reduced Training Time in Pre-trained Model-based Continual Representation Learning.* ICLR 2026.
-arXiv:2510.16877. 官方代码 github.com/gfyddha/Fly-CL
+Reduced Training Time in Pre-trained Model-based Continual Representation Learning.* ICLR 2026, arXiv:2510.16877.
+官方代码 github.com/gfyddha/Fly-CL
 
 **框架**：LibContinual, RL-VIG（南京大学 MIND 实验室）. github.com/RL-VIG/LibContinual
