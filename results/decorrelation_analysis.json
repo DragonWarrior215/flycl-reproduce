@@ -5,10 +5,6 @@
     "proj_wta": 0.0598
   },
   "corr_reduction_vs_dense_pct": 42.7,
-  "population_sparsity": {
-    "raw": 1.0,
-    "kwta": 0.3
-  },
   "class_similarity": {
     "raw": {
       "within": 0.504,

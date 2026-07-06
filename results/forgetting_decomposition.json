@@ -1,7 +1,8 @@
 {
   "task0_fresh_acc": 98.4,
-  "task0_final_acc_all100": 89.4,
-  "task0_final_acc_restricted10": 97.6,
-  "measured_forgetting_task0": 9.0,
-  "true_catastrophic_forgetting_task0": 0.8
+  "task0_final_restricted": 97.6,
+  "task0_final_all_classes": 89.4,
+  "measured_forgetting": 9.0,
+  "true_forgetting": 0.8,
+  "label_space_growth": 8.2
 }

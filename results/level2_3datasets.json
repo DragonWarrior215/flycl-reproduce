@@ -1,0 +1,203 @@
+{
+  "cifar100": {
+    "decorrelation": {
+      "offdiag_corr": {
+        "raw": 0.0524,
+        "dense_proj": 0.1044,
+        "proj_wta": 0.0598
+      },
+      "corr_reduction_vs_dense_pct": 42.7,
+      "class_similarity": {
+        "raw": {
+          "within": 0.504,
+          "between": 0.451
+        },
+        "kwta": {
+          "within": 0.56,
+          "between": 0.674
+        }
+      }
+    },
+    "forgetting": {
+      "task0_fresh_acc": 98.4,
+      "task0_final_restricted": 97.6,
+      "task0_final_all_classes": 89.4,
+      "measured_forgetting": 9.0,
+      "true_forgetting": 0.8,
+      "label_space_growth": 8.2
+    },
+    "clsfly_M5000": {
+      "0.0": 93.58,
+      "0.1": 93.56,
+      "0.2": 93.54,
+      "0.3": 93.49,
+      "0.5": 93.35,
+      "0.7": 93.11,
+      "1.0": 85.57
+    },
+    "clsfly_smallM": {
+      "300": {
+        "0.0": 87.68,
+        "0.1": 87.68,
+        "0.2": 87.7,
+        "0.3": 87.68,
+        "0.5": 87.62
+      },
+      "500": {
+        "0.0": 90.04,
+        "0.1": 90.02,
+        "0.2": 90.03,
+        "0.3": 89.99,
+        "0.5": 89.92
+      },
+      "1000": {
+        "0.0": 91.92,
+        "0.1": 91.93,
+        "0.2": 91.94,
+        "0.3": 91.91,
+        "0.5": 91.84
+      }
+    },
+    "_meta": {
+      "dataset": "CIFAR-100",
+      "num_classes": 100,
+      "num_tasks": 10,
+      "init_cls": 10,
+      "seed": 1993
+    }
+  },
+  "cub": {
+    "decorrelation": {
+      "offdiag_corr": {
+        "raw": 0.0552,
+        "dense_proj": 0.0695,
+        "proj_wta": 0.0412
+      },
+      "corr_reduction_vs_dense_pct": 40.7,
+      "class_similarity": {
+        "raw": {
+          "within": 0.661,
+          "between": 0.624
+        },
+        "kwta": {
+          "within": 0.682,
+          "between": 0.74
+        }
+      }
+    },
+    "forgetting": {
+      "task0_fresh_acc": 97.0,
+      "task0_final_restricted": 95.4,
+      "task0_final_all_classes": 86.1,
+      "measured_forgetting": 11.0,
+      "true_forgetting": 1.7,
+      "label_space_growth": 9.3
+    },
+    "clsfly_M5000": {
+      "0.0": 93.43,
+      "0.1": 93.41,
+      "0.2": 93.42,
+      "0.3": 93.42,
+      "0.5": 93.41,
+      "0.7": 93.36,
+      "1.0": 91.96
+    },
+    "clsfly_smallM": {
+      "300": {
+        "0.0": 87.71,
+        "0.1": 87.76,
+        "0.2": 87.89,
+        "0.3": 87.95,
+        "0.5": 88.24
+      },
+      "500": {
+        "0.0": 89.86,
+        "0.1": 89.91,
+        "0.2": 89.95,
+        "0.3": 89.99,
+        "0.5": 90.1
+      },
+      "1000": {
+        "0.0": 91.74,
+        "0.1": 91.75,
+        "0.2": 91.78,
+        "0.3": 91.8,
+        "0.5": 91.84
+      }
+    },
+    "_meta": {
+      "dataset": "CUB-200-2011",
+      "num_classes": 200,
+      "num_tasks": 10,
+      "init_cls": 20,
+      "seed": 2023
+    }
+  },
+  "vtab": {
+    "decorrelation": {
+      "offdiag_corr": {
+        "raw": 0.0848,
+        "dense_proj": 0.1305,
+        "proj_wta": 0.0839
+      },
+      "corr_reduction_vs_dense_pct": 35.7,
+      "class_similarity": {
+        "raw": {
+          "within": 0.597,
+          "between": 0.258
+        },
+        "kwta": {
+          "within": 0.635,
+          "between": 0.54
+        }
+      }
+    },
+    "forgetting": {
+      "task0_fresh_acc": 99.3,
+      "task0_final_restricted": 98.9,
+      "task0_final_all_classes": 93.8,
+      "measured_forgetting": 5.5,
+      "true_forgetting": 0.4,
+      "label_space_growth": 5.1
+    },
+    "clsfly_M5000": {
+      "0.0": 95.48,
+      "0.1": 95.48,
+      "0.2": 95.45,
+      "0.3": 95.45,
+      "0.5": 95.38,
+      "0.7": 95.26,
+      "1.0": 87.5
+    },
+    "clsfly_smallM": {
+      "300": {
+        "0.0": 89.18,
+        "0.1": 89.26,
+        "0.2": 89.29,
+        "0.3": 89.34,
+        "0.5": 89.48
+      },
+      "500": {
+        "0.0": 92.07,
+        "0.1": 92.07,
+        "0.2": 92.07,
+        "0.3": 92.07,
+        "0.5": 92.08
+      },
+      "1000": {
+        "0.0": 93.9,
+        "0.1": 93.9,
+        "0.2": 93.92,
+        "0.3": 93.91,
+        "0.5": 93.8
+      }
+    },
+    "_meta": {
+      "dataset": "VTAB",
+      "num_classes": 50,
+      "num_tasks": 5,
+      "init_cls": 10,
+      "seed": 2023
+    }
+  }
+}
