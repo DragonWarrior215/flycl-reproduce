@@ -1,23 +1,22 @@
 {
   "offdiag_corr": {
-    "raw": 0.0713,
-    "dense_proj": 0.0822,
-    "proj_wta": 0.0546
+    "raw": 0.0524,
+    "dense_proj": 0.1044,
+    "proj_wta": 0.0598
   },
-  "corr_reduction_vs_dense_pct": 33.6,
+  "corr_reduction_vs_dense_pct": 42.7,
   "population_sparsity": {
     "raw": 1.0,
     "kwta": 0.3
   },
   "class_similarity": {
     "raw": {
-      "within": 0.411,
-      "between": 0.147
+      "within": 0.504,
+      "between": 0.451
     },
     "kwta": {
-      "within": 0.493,
-      "between": 0.328
+      "within": 0.56,
+      "between": 0.674
     }
-  },
-  "interpretation": "k-WTA (APL inhibition / DG pattern separation) reduces feature multicollinearity by 33.6% vs dense projection and increases between-class separation, validating the fly-circuit decorrelation mechanism."
+  }
 }

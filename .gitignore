@@ -25,3 +25,6 @@ env/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# GPU-extracted feature cache (analysis_gpu.py)
+.feat_cache/

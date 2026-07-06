@@ -1,8 +1,7 @@
 {
-  "task0_fresh_acc": 95.1,
-  "task0_final_acc_all100": 81.2,
-  "task0_final_acc_restricted10": 94.7,
-  "measured_forgetting_task0": 13.9,
-  "true_catastrophic_forgetting_task0": 0.4,
-  "interpretation": "measured forgetting (13.9%) decomposes into ~0.4% true representational forgetting + ~13.5% label-space growth (10->100 classes). Fly-CL's accumulated ridge readout is order-independent => weights not overwritten => near-zero catastrophic forgetting."
+  "task0_fresh_acc": 98.4,
+  "task0_final_acc_all100": 89.4,
+  "task0_final_acc_restricted10": 97.6,
+  "measured_forgetting_task0": 9.0,
+  "true_catastrophic_forgetting_task0": 0.8
 }
