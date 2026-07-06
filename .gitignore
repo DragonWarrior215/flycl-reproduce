@@ -7,10 +7,6 @@
 # Datasets (download separately, e.g. CIFAR-100)
 /data/
 
-# Extracted features (regenerate via extract_features_sharded.py)
-features/
-*.npz
-
 # Python
 __pycache__/
 *.py[cod]
