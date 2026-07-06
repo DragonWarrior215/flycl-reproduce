@@ -1,0 +1,394 @@
+Selected GPUs: ['0']
+================Task 0 Start!================
+Trainable Parameters for Task 0 : 0 / 85798656 (0.00%)
+================Task 0 Training!================
+The training samples number : 939
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:08,  1.20s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.69it/s] 38%|███▊      | 3/8 [00:01<00:02,  2.45it/s] 50%|█████     | 4/8 [00:01<00:01,  3.23it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.75it/s] 75%|███████▌  | 6/8 [00:02<00:00,  4.37it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.61it/s]100%|██████████| 8/8 [00:02<00:00,  3.39it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.95it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+ * [Batch] Last Average Acc: 6.09 (Best: 6.09)
+ * [Task] Last Average Acc: 6.09 (Best: 6.09)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [6.09]
+[Fly-CL] task 0: N=939 classes_seen=20 lambda=1.0e+06
+================Test 1/1 of Task 0!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.03s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.67it/s]
+ * [Batch] Last Average Acc: 98.70 (Best: 98.70)
+ * [Task] Last Average Acc: 98.70 (Best: 98.70)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [98.7]
+================Result of Task 0 Testing!================
+ * [Batch] Last Average Acc: 98.70 (Best: 98.70)
+ * [Task] Last Average Acc: 98.70 (Best: 98.70)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [98.7]
+================Task 1 Start!================
+Trainable Parameters for Task 1 : 0 / 85798656 (0.00%)
+================Task 1 Training!================
+The training samples number : 925
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.05s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.91it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.69it/s] 50%|█████     | 4/8 [00:01<00:01,  3.48it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.96it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.56it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.78it/s]100%|██████████| 8/8 [00:02<00:00,  3.67it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.04s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.67it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.02s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.96it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+ * [Batch] Last Average Acc: 47.49 (Best: 47.49)
+ * [Task] Last Average Acc: 49.35 (Best: 49.35)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [98.7, 0.0]
+[Fly-CL] task 1: N=925 classes_seen=40 lambda=1.0e+06
+================Test 1/1 of Task 1!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.74it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.45it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.89it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+ * [Batch] Last Average Acc: 95.82 (Best: 95.82)
+ * [Task] Last Average Acc: 95.81 (Best: 95.81)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [95.65, 95.97]
+================Result of Task 1 Testing!================
+ * [Batch] Last Average Acc: 95.82 (Best: 95.82)
+ * [Task] Last Average Acc: 95.81 (Best: 95.81)
+ * Forgetting: 0.000 (Best: 0.000)
+ * Backward Transfer: 0.00 (Best: 0.00)
+ * Per-Task Acc: [95.65 95.97]
+================Task 2 Start!================
+Trainable Parameters for Task 2 : 0 / 85798656 (0.00%)
+================Task 2 Training!================
+The training samples number : 953
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.03s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.94it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.71it/s] 50%|█████     | 4/8 [00:01<00:01,  3.52it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.98it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.58it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.84it/s]100%|██████████| 8/8 [00:02<00:00,  3.63it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.96it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+ * [Batch] Last Average Acc: 65.24 (Best: 65.24)
+ * [Task] Last Average Acc: 63.87 (Best: 63.87)
+ * Forgetting: 1.525 (Best: 1.525)
+ * Backward Transfer: -1.02 (Best: -1.02)
+ * Per-Task Acc: [95.65, 95.97, 0.0]
+[Fly-CL] task 2: N=953 classes_seen=60 lambda=1.0e+06
+================Test 1/1 of Task 2!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.03s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.67it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.03s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.97it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.65it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.98it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+ * [Batch] Last Average Acc: 95.16 (Best: 95.16)
+ * [Task] Last Average Acc: 95.18 (Best: 95.18)
+ * Forgetting: 2.175 (Best: 1.525)
+ * Backward Transfer: -1.45 (Best: -1.02)
+ * Per-Task Acc: [94.35, 94.76, 96.43]
+================Result of Task 2 Testing!================
+ * [Batch] Last Average Acc: 95.16 (Best: 95.16)
+ * [Task] Last Average Acc: 95.18 (Best: 95.18)
+ * Forgetting: 2.175 (Best: 1.525)
+ * Backward Transfer: -1.45 (Best: -1.02)
+ * Per-Task Acc: [94.35 94.76 96.43]
+================Task 3 Start!================
+Trainable Parameters for Task 3 : 0 / 85798656 (0.00%)
+================Task 3 Training!================
+The training samples number : 956
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.12s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.80it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.59it/s] 50%|█████     | 4/8 [00:01<00:01,  3.40it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.93it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.53it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.80it/s]100%|██████████| 8/8 [00:02<00:00,  3.53it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.17s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.80it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.49it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.83it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.51it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.74it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.43it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+ * [Batch] Last Average Acc: 71.44 (Best: 71.44)
+ * [Task] Last Average Acc: 71.38 (Best: 71.38)
+ * Forgetting: 1.867 (Best: 1.867)
+ * Backward Transfer: -1.66 (Best: -1.66)
+ * Per-Task Acc: [93.91, 95.16, 96.43, 0.0]
+[Fly-CL] task 3: N=956 classes_seen=80 lambda=1.0e+06
+================Test 1/1 of Task 3!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.95it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.62it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.72it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.42it/s]
+ * [Batch] Last Average Acc: 94.22 (Best: 94.22)
+ * [Task] Last Average Acc: 94.23 (Best: 94.23)
+ * Forgetting: 2.290 (Best: 1.867)
+ * Backward Transfer: -1.87 (Best: -1.66)
+ * Per-Task Acc: [93.04, 94.76, 96.43, 92.7]
+================Result of Task 3 Testing!================
+ * [Batch] Last Average Acc: 94.22 (Best: 94.22)
+ * [Task] Last Average Acc: 94.23 (Best: 94.23)
+ * Forgetting: 2.290 (Best: 1.867)
+ * Backward Transfer: -1.87 (Best: -1.66)
+ * Per-Task Acc: [93.04 94.76 96.43 92.7 ]
+================Task 4 Start!================
+Trainable Parameters for Task 4 : 0 / 85798656 (0.00%)
+================Task 4 Training!================
+The training samples number : 921
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.08s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.86it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.61it/s] 50%|█████     | 4/8 [00:01<00:01,  3.39it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.89it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.48it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.69it/s]100%|██████████| 8/8 [00:02<00:00,  3.60it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.98it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.65it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.89it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.15s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.85it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.52it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.68it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.40it/s]
+ * [Batch] Last Average Acc: 74.33 (Best: 74.33)
+ * [Task] Last Average Acc: 75.55 (Best: 75.55)
+ * Forgetting: 1.508 (Best: 1.508)
+ * Backward Transfer: -1.73 (Best: -1.73)
+ * Per-Task Acc: [93.48, 95.16, 96.43, 92.7, 0.0]
+[Fly-CL] task 4: N=921 classes_seen=100 lambda=1.0e+06
+================Test 1/1 of Task 4!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.86it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.55it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.19s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.79it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.47it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.73it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.43it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.21s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.70it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.41it/s]
+ * [Batch] Last Average Acc: 93.43 (Best: 93.43)
+ * [Task] Last Average Acc: 93.43 (Best: 93.43)
+ * Forgetting: 2.375 (Best: 1.508)
+ * Backward Transfer: -2.07 (Best: -1.73)
+ * Per-Task Acc: [91.3, 94.76, 95.54, 92.27, 93.28]
+================Result of Task 4 Testing!================
+ * [Batch] Last Average Acc: 93.43 (Best: 93.43)
+ * [Task] Last Average Acc: 93.43 (Best: 93.43)
+ * Forgetting: 2.375 (Best: 1.508)
+ * Backward Transfer: -2.07 (Best: -1.73)
+ * Per-Task Acc: [91.3  94.76 95.54 92.27 93.28]
+================Task 5 Start!================
+Trainable Parameters for Task 5 : 0 / 85798656 (0.00%)
+================Task 5 Training!================
+The training samples number : 925
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.09s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.84it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.59it/s] 50%|█████     | 4/8 [00:01<00:01,  3.37it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.83it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.42it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.65it/s]100%|██████████| 8/8 [00:02<00:00,  3.56it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.96it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.18s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.75it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.46it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.98it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.72it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.41it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.85it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.54it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.16s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.77it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.11it/s]
+ * [Batch] Last Average Acc: 76.58 (Best: 76.58)
+ * [Task] Last Average Acc: 77.99 (Best: 77.99)
+ * Forgetting: 1.826 (Best: 1.826)
+ * Backward Transfer: -1.99 (Best: -1.99)
+ * Per-Task Acc: [91.3, 95.56, 95.54, 92.27, 93.28, 0.0]
+[Fly-CL] task 5: N=925 classes_seen=120 lambda=1.0e+06
+================Test 1/1 of Task 5!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.12s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.86it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.54it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.21s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.72it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.42it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.73it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.42it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.69it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.40it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.11s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.82it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.19it/s]
+ * [Batch] Last Average Acc: 92.42 (Best: 92.42)
+ * [Task] Last Average Acc: 92.38 (Best: 92.38)
+ * Forgetting: 3.116 (Best: 1.826)
+ * Backward Transfer: -2.42 (Best: -1.99)
+ * Per-Task Acc: [89.13, 94.35, 93.75, 90.99, 92.49, 93.56]
+================Result of Task 5 Testing!================
+ * [Batch] Last Average Acc: 92.42 (Best: 92.42)
+ * [Task] Last Average Acc: 92.38 (Best: 92.38)
+ * Forgetting: 3.116 (Best: 1.826)
+ * Backward Transfer: -2.42 (Best: -1.99)
+ * Per-Task Acc: [89.13 94.35 93.75 90.99 92.49 93.56]
+================Task 6 Start!================
+Trainable Parameters for Task 6 : 0 / 85798656 (0.00%)
+================Task 6 Training!================
+The training samples number : 936
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.12s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.80it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.55it/s] 50%|█████     | 4/8 [00:01<00:01,  3.33it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.81it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.38it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.61it/s]100%|██████████| 8/8 [00:02<00:00,  3.49it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.73it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.44it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.84it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.14s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.79it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.48it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.08s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.86it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.23it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.14s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.81it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.50it/s]
+ * [Batch] Last Average Acc: 79.22 (Best: 79.22)
+ * [Task] Last Average Acc: 79.18 (Best: 79.18)
+ * Forgetting: 2.727 (Best: 2.727)
+ * Backward Transfer: -2.51 (Best: -2.51)
+ * Per-Task Acc: [88.26, 94.35, 94.2, 91.42, 92.49, 93.56, 0.0]
+[Fly-CL] task 6: N=936 classes_seen=140 lambda=1.0e+06
+================Test 1/1 of Task 6!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.96it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.62it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.10s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.14s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.83it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.52it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.81it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.50it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.08s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.86it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.24it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+ * [Batch] Last Average Acc: 90.91 (Best: 90.91)
+ * [Task] Last Average Acc: 90.89 (Best: 90.89)
+ * Forgetting: 3.900 (Best: 2.727)
+ * Backward Transfer: -2.84 (Best: -2.51)
+ * Per-Task Acc: [86.52, 93.95, 92.86, 91.42, 88.93, 91.67, 90.91]
+================Result of Task 6 Testing!================
+ * [Batch] Last Average Acc: 90.91 (Best: 90.91)
+ * [Task] Last Average Acc: 90.89 (Best: 90.89)
+ * Forgetting: 3.900 (Best: 2.727)
+ * Backward Transfer: -2.84 (Best: -2.51)
+ * Per-Task Acc: [86.52 93.95 92.86 91.42 88.93 91.67 90.91]
+================Task 7 Start!================
+Trainable Parameters for Task 7 : 0 / 85798656 (0.00%)
+================Task 7 Training!================
+The training samples number : 929
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.07s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.87it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.63it/s] 50%|█████     | 4/8 [00:01<00:01,  3.43it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.93it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.53it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.75it/s]100%|██████████| 8/8 [00:02<00:00,  3.62it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.97it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.20s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.73it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.43it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.95it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.84it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.29s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.61it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  1.96it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.03s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.97it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.66it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.20s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.76it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.45it/s]
+ * [Batch] Last Average Acc: 79.99 (Best: 79.99)
+ * [Task] Last Average Acc: 79.48 (Best: 79.48)
+ * Forgetting: 3.736 (Best: 3.736)
+ * Backward Transfer: -3.07 (Best: -3.07)
+ * Per-Task Acc: [86.09, 94.35, 92.41, 91.42, 88.93, 91.29, 91.32, 0.0]
+[Fly-CL] task 7: N=929 classes_seen=160 lambda=1.0e+06
+================Test 1/1 of Task 7!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.04s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.13s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.87it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.12s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.82it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.52it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.09s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.84it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.24it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.12s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.85it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.55it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.22s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.74it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.43it/s]
+ * [Batch] Last Average Acc: 90.64 (Best: 90.64)
+ * [Task] Last Average Acc: 90.62 (Best: 90.62)
+ * Forgetting: 3.927 (Best: 3.736)
+ * Backward Transfer: -3.11 (Best: -3.07)
+ * Per-Task Acc: [85.22, 93.55, 92.41, 90.99, 88.93, 92.05, 90.5, 91.3]
+================Result of Task 7 Testing!================
+ * [Batch] Last Average Acc: 90.64 (Best: 90.64)
+ * [Task] Last Average Acc: 90.62 (Best: 90.62)
+ * Forgetting: 3.927 (Best: 3.736)
+ * Backward Transfer: -3.11 (Best: -3.07)
+ * Per-Task Acc: [85.22 93.55 92.41 90.99 88.93 92.05 90.5  91.3 ]
+================Task 8 Start!================
+Trainable Parameters for Task 8 : 0 / 85798656 (0.00%)
+================Task 8 Training!================
+The training samples number : 952
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.07s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.88it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.68it/s] 50%|█████     | 4/8 [00:01<00:01,  3.49it/s] 62%|██████▎   | 5/8 [00:01<00:00,  4.01it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.57it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.79it/s]100%|██████████| 8/8 [00:02<00:00,  3.61it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.10s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.90it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.91it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.12s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.87it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.54it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.04s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.21s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.70it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.07it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+Testing on Task 8 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 8 data:  50%|█████     | 1/2 [00:01<00:01,  1.10s/it]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.89it/s]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+ * [Batch] Last Average Acc: 80.93 (Best: 80.93)
+ * [Task] Last Average Acc: 80.56 (Best: 80.56)
+ * Forgetting: 3.531 (Best: 3.531)
+ * Backward Transfer: -3.21 (Best: -3.21)
+ * Per-Task Acc: [85.22, 93.95, 92.41, 91.42, 88.93, 91.29, 90.08, 91.74, 0.0]
+[Fly-CL] task 8: N=952 classes_seen=180 lambda=1.0e+06
+================Test 1/1 of Task 8!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.94it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.62it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.98it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.88it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.57it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.12s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.80it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.16it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.11s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.86it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.55it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.19s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.77it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.46it/s]
+Testing on Task 8 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 8 data:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]
+ * [Batch] Last Average Acc: 89.65 (Best: 89.65)
+ * [Task] Last Average Acc: 89.59 (Best: 89.59)
+ * Forgetting: 4.361 (Best: 3.531)
+ * Backward Transfer: -3.39 (Best: -3.21)
+ * Per-Task Acc: [83.48, 92.74, 89.29, 90.56, 89.33, 92.42, 88.84, 90.87, 88.74]
+================Result of Task 8 Testing!================
+ * [Batch] Last Average Acc: 89.65 (Best: 89.65)
+ * [Task] Last Average Acc: 89.59 (Best: 89.59)
+ * Forgetting: 4.361 (Best: 3.531)
+ * Backward Transfer: -3.39 (Best: -3.21)
+ * Per-Task Acc: [83.48 92.74 89.29 90.56 89.33 92.42 88.84 90.87 88.74]
+================Task 9 Start!================
+Trainable Parameters for Task 9 : 0 / 85798656 (0.00%)
+================Task 9 Training!================
+The training samples number : 994
+================Train on train set================
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:01<00:07,  1.11s/it] 25%|██▌       | 2/8 [00:01<00:03,  1.80it/s] 38%|███▊      | 3/8 [00:01<00:01,  2.57it/s] 50%|█████     | 4/8 [00:01<00:01,  3.35it/s] 62%|██████▎   | 5/8 [00:01<00:00,  3.84it/s] 75%|███████▌  | 6/8 [00:01<00:00,  4.45it/s] 88%|████████▊ | 7/8 [00:02<00:00,  4.69it/s]100%|██████████| 8/8 [00:02<00:00,  5.43it/s]100%|██████████| 8/8 [00:02<00:00,  3.42it/s]
+Epoch [0/1] Learning Rate [0.0]	|	Loss: 0.0000 	Average Acc: 0.00 
+================Validation on test set================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.21s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.75it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.45it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.92it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.99it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.16s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.81it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.48it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.87it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.55it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.08s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.86it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.25it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.95it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.62it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.12s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.88it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.54it/s]
+Testing on Task 8 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 8 data:  50%|█████     | 1/2 [00:01<00:01,  1.06s/it]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.96it/s]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+Testing on Task 9 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 9 data:  50%|█████     | 1/2 [00:01<00:01,  1.24s/it]Testing on Task 9 data: 100%|██████████| 2/2 [00:01<00:00,  1.44it/s]
+ * [Batch] Last Average Acc: 82.06 (Best: 82.06)
+ * [Task] Last Average Acc: 80.76 (Best: 80.76)
+ * Forgetting: 3.823 (Best: 3.823)
+ * Backward Transfer: -3.48 (Best: -3.48)
+ * Per-Task Acc: [83.48, 93.15, 89.73, 90.99, 89.33, 92.05, 88.84, 90.87, 89.18, 0.0]
+[Fly-CL] task 9: N=994 classes_seen=200 lambda=1.0e+06
+================Test 1/1 of Task 9!================
+Testing on Task 0 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 0 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.98it/s]Testing on Task 0 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 1 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 1 data:  50%|█████     | 1/2 [00:01<00:01,  1.04s/it]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.95it/s]Testing on Task 1 data: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]
+Testing on Task 2 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 2 data:  50%|█████     | 1/2 [00:01<00:01,  1.05s/it]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s]Testing on Task 2 data: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]
+Testing on Task 3 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 3 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.93it/s]Testing on Task 3 data: 100%|██████████| 2/2 [00:01<00:00,  1.61it/s]
+Testing on Task 4 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 4 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.89it/s]Testing on Task 4 data: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]
+Testing on Task 5 data:   0%|          | 0/3 [00:00<?, ?it/s]Testing on Task 5 data:  33%|███▎      | 1/3 [00:01<00:02,  1.06s/it]Testing on Task 5 data:  67%|██████▋   | 2/3 [00:01<00:00,  1.90it/s]Testing on Task 5 data: 100%|██████████| 3/3 [00:01<00:00,  2.28it/s]
+Testing on Task 6 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 6 data:  50%|█████     | 1/2 [00:01<00:01,  1.18s/it]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.76it/s]Testing on Task 6 data: 100%|██████████| 2/2 [00:01<00:00,  1.48it/s]
+Testing on Task 7 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 7 data:  50%|█████     | 1/2 [00:01<00:01,  1.20s/it]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.77it/s]Testing on Task 7 data: 100%|██████████| 2/2 [00:01<00:00,  1.45it/s]
+Testing on Task 8 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 8 data:  50%|█████     | 1/2 [00:01<00:01,  1.23s/it]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.72it/s]Testing on Task 8 data: 100%|██████████| 2/2 [00:01<00:00,  1.42it/s]
+Testing on Task 9 data:   0%|          | 0/2 [00:00<?, ?it/s]Testing on Task 9 data:  50%|█████     | 1/2 [00:01<00:01,  1.07s/it]Testing on Task 9 data: 100%|██████████| 2/2 [00:01<00:00,  1.65it/s]
+ * [Batch] Last Average Acc: 87.79 (Best: 87.79)
+ * [Task] Last Average Acc: 87.60 (Best: 87.60)
+ * Forgetting: 4.916 (Best: 3.823)
+ * Backward Transfer: -3.70 (Best: -3.48)
+ * Per-Task Acc: [78.7, 92.74, 88.84, 90.13, 90.12, 91.67, 85.54, 90.87, 86.15, 81.28]
+================Result of Task 9 Testing!================
+ * [Batch] Last Average Acc: 87.79 (Best: 87.79)
+ * [Task] Last Average Acc: 87.60 (Best: 87.60)
+ * Forgetting: 4.916 (Best: 3.823)
+ * Backward Transfer: -3.70 (Best: -3.48)
+ * Per-Task Acc: [78.7  92.74 88.84 90.13 90.12 91.67 85.54 90.87 86.15 81.28]
+================Overall Result of 10 Tasks!================
+ * [Batch] Last Average Acc: 87.79 (Best: 87.79)
+ * [Task] Last Average Acc: 87.60 (Best: 87.60)
+ * Forgetting: 4.916 (Best: 3.823)
+ * Backward Transfer: -3.70 (Best: -3.48)
+ * [Batch] Overall Avg Acc : 92.87 (Best: 92.87)
+ * [Task] Overall Avg Acc : 92.84
+ * Overall Frgt : 3.382
+ * Overall BwT : -2.61
+ * Average Acc Table : 
+[[98.7   0.    0.    0.    0.    0.    0.    0.    0.    0.  ]
+ [95.65 95.97  0.    0.    0.    0.    0.    0.    0.    0.  ]
+ [94.35 94.76 96.43  0.    0.    0.    0.    0.    0.    0.  ]
+ [93.04 94.76 96.43 92.7   0.    0.    0.    0.    0.    0.  ]
+ [91.3  94.76 95.54 92.27 93.28  0.    0.    0.    0.    0.  ]
+ [89.13 94.35 93.75 90.99 92.49 93.56  0.    0.    0.    0.  ]
+ [86.52 93.95 92.86 91.42 88.93 91.67 90.91  0.    0.    0.  ]
+ [85.22 93.55 92.41 90.99 88.93 92.05 90.5  91.3   0.    0.  ]
+ [83.48 92.74 89.29 90.56 89.33 92.42 88.84 90.87 88.74  0.  ]
+ [78.7  92.74 88.84 90.13 90.12 91.67 85.54 90.87 86.15 81.28]]
+================Model Performance Analysis================
+ * Time Costs : 202.68 sec
+ * Average FPS (Best FPS) : 239 (268)

@@ -26,6 +26,7 @@ seed: 2023
 dataset: vtab
 data_root: ./data/vtab     # ImageFolder layout: train/<class>/*.jpg, test/<class>/*.jpg
 setting: task-agnostic
+testing_times: 1          # deterministic closed-form -> repeated eval is redundant
 testing_per_task: True
 num_workers: 8
 
@@ -71,7 +72,7 @@ backbone:
   name: vit_flycl
   kwargs:
     pretrained: true
-    weights_path: ./assets/vit_b16_augreg_in21k_ft_in1k.npz   # paper's IN21k augreg ViT-B/16
+    weights_path: ./assets/vit_b16_augreg_in21k.npz   # paper's IN21k augreg ViT-B/16 (download.sh)
     model_name: vit_base_patch16_224
 
 classifier:

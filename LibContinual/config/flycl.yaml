@@ -27,6 +27,7 @@ seed: 1993
 dataset: binary_cifar100
 data_root: ./data          # contains data/cifar-100-python/{train,test}
 setting: task-agnostic     # class-incremental (no task id at inference)
+testing_times: 1          # deterministic closed-form -> repeated eval is redundant
 testing_per_task: True
 num_workers: 8
 
@@ -74,9 +75,9 @@ backbone:
   name: vit_flycl
   kwargs:
     pretrained: true
-    # Paper's IN21k augreg ViT-B/16. For the IN-1k backbone ablation use
-    # ./assets/vit_b_16_torchvision.pth instead (see README §5).
-    weights_path: ./assets/vit_b16_augreg_in21k_ft_in1k.npz
+    # Paper's IN21k augreg ViT-B/16 (the .npz from Fly-CL's pretrained_model/download.sh).
+    # For the IN-1k backbone ablation use ./assets/vit_b_16_torchvision.pth instead (see README §5).
+    weights_path: ./assets/vit_b16_augreg_in21k.npz
     model_name: vit_base_patch16_224
 
 classifier:
